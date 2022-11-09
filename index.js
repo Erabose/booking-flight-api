@@ -1,17 +1,21 @@
-const express = require("express");
-const { json } = require("express");
-const flights = require("./controllers/flightController");
-const models = require("./models/Flight");
-const routes = require("./routes/flightRoute");
+const express = require('express')
 
-const app = express();
+const app = express()
 
-app.use(json());
+const PORT = 3000
 
-app.use("/", routes);
+const flightRouter = require('./routes/flightsRoute')
 
-const port = process.env.PORT || 3000;
+app.use('/flights', express.json(), flightRouter)
 
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-});
+app.get('/', (req, res, next) => {
+    res.send('welcome ooo to flights api')
+})
+
+app.use((req, res, next) => {
+    res.status(404).send("page not found")
+})
+
+app.listen(PORT, () => {
+    console.log('server running on localhost, port: ' + PORT)
+})
